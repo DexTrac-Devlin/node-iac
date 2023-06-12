@@ -15,45 +15,42 @@ USERNAME=devlin
 #                Deploy Canto Node                  #
 # ================================================= #
 # Install go
-mkdir -p /home/$USERNAME/stuff/packages
-sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/stuff/packages
-wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz -P /home/$USERNAME/stuff/packages
-cd /home/$USERNAME/stuff/packages
-sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/stuff/packages
+mkdir -p ~/stuff/packages
+wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz -P ~/stuff/packages
+cd ~/stuff/packages
 tar xvf go1.20.4.linux-amd64.tar.gz
 sudo chown -R root:root ./go
 sudo mv go /usr/local/
 cd
-cat >> /home/$USERNAME/.profile << EOL
+cat >> ~/.profile << EOL
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 EOL
 
-source /home/$USERNAME/.profile
+source ~/.profile
 
 # Clone Canto repo, compile binaries, and move to path
-cd /home/$USERNAME/
+cd ~/
 git clone https://github.com/Canto-Network/Canto.git
-sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/Canto
-cd /home/$USERNAME/Canto
+cd ~/Canto
 git checkout v1.0.0
-make install
-sudo cp /home/$USERNAME/build/cantod /usr/bin/
+make
+sudo cp ~/Canto/build/cantod /usr/bin/
 cd
 
 # Initialize canto
-cd /home/$USERNAME/Canto
+cd ~/Canto
 ./build/cantod init LayerZero --chain-id canto_7700-1
-sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.cantod
-cd /home/$USERNAME/.cantod/config
-rm /home/$USERNAME/.cantod/config/genesis.json
+cd ~/.cantod/config
+rm ~/.cantod/config/genesis.json
 wget https://github.com/Canto-Network/Canto/raw/genesis/Networks/Mainnet/genesis.json
-sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.cantod
 # Update config
-sed -i 's/seeds = ""/seeds = "ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:15556"/g' /mnt/data/canto-data/.cantod/config/config.toml
-sed -i 's/minimum-gas-prices = "0acanto"/minimum-gas-prices = "0.0001acanto"/g' /mnt/data/canto-data/.cantod/config/app.toml
-sed -i 's/pruning = "default"/pruning = "nothing"/g' /mnt/data/canto-data/.cantod/config/app.toml
+sed -i 's/seeds = ""/seeds = "ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:15556"/g' ~/.cantod/config/config.toml
+sed -i 's/minimum-gas-prices = "0acanto"/minimum-gas-prices = "0.0001acanto"/g' ~.cantod/config/app.toml
+sed -i 's/pruning = "default"/pruning = "nothing"/g' ~.cantod/config/app.toml
 cd
+cp -r ~/.cantod /mnt/data/canto-data/
+
 # Create & start cantod.service
 sudo touch /etc/systemd/system/cantod.service
 sudo cat > /etc/systemd/system/cantod.service << EOL
@@ -64,7 +61,7 @@ After=network.target
 [Service]
 Type=simple
 User=$USERNAME
-WorkingDirectory=/home/$USERNAME/.cantod/
+WorkingDirectory=/mnt/data/canto-data/.cantod/
 ExecStart=/home/$USERNAME/go/bin/cantod start --trace --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable
 Restart=on-failure
 StartLimitInterval=0
