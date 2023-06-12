@@ -32,23 +32,23 @@ EOL
 source /home/$USERNAME/.profile
 
 # Clone Canto repo, compile binaries, and move to path
-cd /mnt/data/canto-data
+cd /home/$USERNAME/
 git clone https://github.com/Canto-Network/Canto.git
-sudo chown -R $USERNAME:$USERNAME /mnt/data/canto-data/Canto
-cd /mnt/data/canto-data/Canto
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/Canto
+cd /home/$USERNAME/Canto
 git checkout v1.0.0
 make install
-sudo cp /mnt/data/canto-data/Cantod/build/cantod /usr/bin/
+sudo cp /home/$USERNAME/build/cantod /usr/bin/
 cd
 
 # Initialize canto
-cd /mnt/data/canto-data/Canto
+cd /home/$USERNAME/Canto
 ./build/cantod init LayerZero --chain-id canto_7700-1
-cp -r /home/$USERNAME/.cantod /mnt/data/canto-data/
-sudo chown -R $USERNAME:$USERNAME /mnt/data/canto-data/.cantod
-cd /mnt/data/canto-data/.cantod/config
-rm /mnt/data/canto-data/.cantod/config/genesis.json
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.cantod
+cd /home/$USERNAME/.cantod/config
+rm /home/$USERNAME/.cantod/config/genesis.json
 wget https://github.com/Canto-Network/Canto/raw/genesis/Networks/Mainnet/genesis.json
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.cantod
 # Update config
 sed -i 's/seeds = ""/seeds = "ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:15556"/g' /mnt/data/canto-data/.cantod/config/config.toml
 sed -i 's/minimum-gas-prices = "0acanto"/minimum-gas-prices = "0.0001acanto"/g' /mnt/data/canto-data/.cantod/config/app.toml
@@ -64,7 +64,7 @@ After=network.target
 [Service]
 Type=simple
 User=$USERNAME
-WorkingDirectory=/mnt/data/canto-data/.cantod/
+WorkingDirectory=/home/$USERNAME/.cantod/
 ExecStart=/home/$USERNAME/go/bin/cantod start --trace --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable
 Restart=on-failure
 StartLimitInterval=0
