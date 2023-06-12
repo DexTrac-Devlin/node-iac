@@ -8,41 +8,44 @@
 #                   Variables                       #
 # ================================================= #
 # Please update the following variables as needed.
+USER=devlin
 
 
 # ================================================= #
 #                Deploy Canto Node                 #
 # ================================================= #
-
 # Install go
-mkdir -p ~/stuff/packages
-wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz -P ~/stuff/packages
-cd ~/stuff/packages
+mkdir -p /home/$USER/stuff/packages
+sudo chown -R $USER /home/$USER/stuff/packages
+wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz -P /home/$USER/stuff/packages
+cd /home/$USER/stuff/packages
+sudo chown -R $USER /home/$USER/stuff/packages
 tar xvf go1.20.4.linux-amd64.tar.gz
 sudo chown -R root:root ./go
 sudo mv go /usr/local/
 cd
-cat > ~/.profile << EOL
+cat > /home/$USER/.profile << EOL
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 EOL
 
-source ~/.profile
+source /home/$USER/.profile
 
 # Clone Canto repo, compile binaries, and move to path
 cd /mnt/data/canto-data
 git clone https://github.com/Canto-Network/Canto.git
+sudo chown -R devlin /mnt/data/canto-data/Canto
 cd Canto
 git checkout v1.0.0
 make install
-cp ~/go/bin/cantod /usr/bin/
+cp /home/$USER/go/bin/cantod /usr/bin/
 cd
 
 # Initialize canto
-cantod init LayZero --chain-id canto_7700-1
-cp -r ~/.cantod /mnt/data/canto-data/
+cantod init LayerZero --chain-id canto_7700-1
+cp -r /home/$USER/.cantod /mnt/data/canto-data/
 cd /mnt/data/canto-data/config
-rm ~/mnt/data/canto-data/.cantod/config/genesis.json
+rm /mnt/data/canto-data/.cantod/config/genesis.json
 wget https://github.com/Canto-Network/Canto/raw/genesis/Networks/Mainnet/genesis.json
 # Update config
 sed -i 's/seeds = ""/seeds = "ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:15556"/g' /mnt/data/canto-data/.canto/config/config.toml
@@ -58,9 +61,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=devlin
+User=$USER
 WorkingDirectory=/mnt/data/canto-data/.cantod/
-ExecStart=~/go/bin/cantod start --trace --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable
+ExecStart=/home/$USER/go/bin/cantod start --trace --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable
 Restart=on-failure
 StartLimitInterval=0
 RestartSec=3
