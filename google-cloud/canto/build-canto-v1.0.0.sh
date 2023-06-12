@@ -34,7 +34,8 @@ cd ~/
 git clone https://github.com/Canto-Network/Canto.git
 cd ~/Canto
 git checkout v1.0.0
-make
+source ~/.profile
+make install
 sudo cp ~/Canto/build/cantod /usr/bin/
 cd
 
