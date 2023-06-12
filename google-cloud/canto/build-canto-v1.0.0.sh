@@ -26,6 +26,7 @@ cat > ~/.profile << EOL
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 EOL
+
 source ~/.profile
 
 # Clone Canto repo, compile binaries, and move to path
