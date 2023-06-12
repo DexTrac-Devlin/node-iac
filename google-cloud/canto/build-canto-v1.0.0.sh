@@ -16,10 +16,10 @@ USER=devlin
 # ================================================= #
 # Install go
 mkdir -p /home/$USER/stuff/packages
-sudo chown -R $USER /home/$USER/stuff/packages
+sudo chown -R $USER:$USER /home/$USER/stuff/packages
 wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz -P /home/$USER/stuff/packages
 cd /home/$USER/stuff/packages
-sudo chown -R $USER /home/$USER/stuff/packages
+sudo chown -R $USER:$USER /home/$USER/stuff/packages
 tar xvf go1.20.4.linux-amd64.tar.gz
 sudo chown -R root:root ./go
 sudo mv go /usr/local/
@@ -34,7 +34,7 @@ source /home/$USER/.profile
 # Clone Canto repo, compile binaries, and move to path
 cd /mnt/data/canto-data
 git clone https://github.com/Canto-Network/Canto.git
-sudo chown -R $USER /mnt/data/canto-data/
+sudo chown -R $USER:$USER /mnt/data/canto-data/Canto
 cd Canto
 git checkout v1.0.0
 make install
@@ -44,7 +44,8 @@ cd
 # Initialize canto
 cantod init LayerZero --chain-id canto_7700-1
 cp -r /home/$USER/.cantod /mnt/data/canto-data/
-cd /mnt/data/canto-data/config
+sudo chown -R $USER:$USER /mnt/data/canto-data/.cantod
+cd /mnt/data/canto-data/.canto/dconfig
 rm /mnt/data/canto-data/.cantod/config/genesis.json
 wget https://github.com/Canto-Network/Canto/raw/genesis/Networks/Mainnet/genesis.json
 # Update config
