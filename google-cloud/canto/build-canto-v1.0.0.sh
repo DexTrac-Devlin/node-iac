@@ -24,7 +24,7 @@ tar xvf go1.20.4.linux-amd64.tar.gz
 sudo chown -R root:root ./go
 sudo mv go /usr/local/
 cd
-cat > /home/$USER/.profile << EOL
+cat >> /home/$USER/.profile << EOL
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 EOL
@@ -34,7 +34,7 @@ source /home/$USER/.profile
 # Clone Canto repo, compile binaries, and move to path
 cd /mnt/data/canto-data
 git clone https://github.com/Canto-Network/Canto.git
-sudo chown -R devlin /mnt/data/canto-data/Canto
+sudo chown -R $USER /mnt/data/canto-data/
 cd Canto
 git checkout v1.0.0
 make install
