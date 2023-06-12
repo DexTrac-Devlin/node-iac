@@ -8,44 +8,44 @@
 #                   Variables                       #
 # ================================================= #
 # Please update the following variables as needed.
-USER=devlin
+USERNAME=devlin
 
 
 # ================================================= #
-#                Deploy Canto Node                 #
+#                Deploy Canto Node                  #
 # ================================================= #
 # Install go
-mkdir -p /home/$USER/stuff/packages
-sudo chown -R $USER:$USER /home/$USER/stuff/packages
-wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz -P /home/$USER/stuff/packages
-cd /home/$USER/stuff/packages
-sudo chown -R $USER:$USER /home/$USER/stuff/packages
+mkdir -p /home/$USERNAME/stuff/packages
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/stuff/packages
+wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz -P /home/$USERNAME/stuff/packages
+cd /home/$USERNAME/stuff/packages
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/stuff/packages
 tar xvf go1.20.4.linux-amd64.tar.gz
 sudo chown -R root:root ./go
 sudo mv go /usr/local/
 cd
-cat >> /home/$USER/.profile << EOL
+cat >> /home/$USERNAME/.profile << EOL
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 EOL
 
-source /home/$USER/.profile
+source /home/$USERNAME/.profile
 
 # Clone Canto repo, compile binaries, and move to path
 cd /mnt/data/canto-data
 git clone https://github.com/Canto-Network/Canto.git
-sudo chown -R $USER:$USER /mnt/data/canto-data/Canto
+sudo chown -R $USERNAME:$USERNAME /mnt/data/canto-data/Canto
 cd Canto
 git checkout v1.0.0
 make install
-cp /home/$USER/go/bin/cantod /usr/bin/
+cp /home/$USERNAME/go/bin/cantod /usr/bin/
 cd
 
 # Initialize canto
 cd /mnt/data/canto-data/Canto
 ./build/cantod init LayerZero --chain-id canto_7700-1
-cp -r /home/$USER/.cantod /mnt/data/canto-data/
-sudo chown -R $USER:$USER /mnt/data/canto-data/.cantod
+cp -r /home/$USERNAME/.cantod /mnt/data/canto-data/
+sudo chown -R $USERNAME:$USERNAME /mnt/data/canto-data/.cantod
 cd /mnt/data/canto-data/.cantod/config
 rm /mnt/data/canto-data/.cantod/config/genesis.json
 wget https://github.com/Canto-Network/Canto/raw/genesis/Networks/Mainnet/genesis.json
@@ -63,9 +63,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=$USER
+User=$USERNAME
 WorkingDirectory=/mnt/data/canto-data/.cantod/
-ExecStart=/home/$USER/go/bin/cantod start --trace --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable
+ExecStart=/home/$USERNAME/go/bin/cantod start --trace --log_level info --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable
 Restart=on-failure
 StartLimitInterval=0
 RestartSec=3
