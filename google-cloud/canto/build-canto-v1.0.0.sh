@@ -42,16 +42,17 @@ cp /home/$USER/go/bin/cantod /usr/bin/
 cd
 
 # Initialize canto
-cantod init LayerZero --chain-id canto_7700-1
+cd /mnt/data/canto-data/Canto
+./build/cantod init LayerZero --chain-id canto_7700-1
 cp -r /home/$USER/.cantod /mnt/data/canto-data/
 sudo chown -R $USER:$USER /mnt/data/canto-data/.cantod
-cd /mnt/data/canto-data/.canto/dconfig
+cd /mnt/data/canto-data/.cantod/config
 rm /mnt/data/canto-data/.cantod/config/genesis.json
 wget https://github.com/Canto-Network/Canto/raw/genesis/Networks/Mainnet/genesis.json
 # Update config
-sed -i 's/seeds = ""/seeds = "ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:15556"/g' /mnt/data/canto-data/.canto/config/config.toml
-sed -i 's/minimum-gas-prices = "0acanto"/minimum-gas-prices = "0.0001acanto"/g' /mnt/data/canto-data/.canto/config/app.toml
-sed -i 's/pruning = "default"/pruning = "nothing"/g' /mnt/data/canto-data/.canto/config/app.toml
+sed -i 's/seeds = ""/seeds = "ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:15556"/g' /mnt/data/canto-data/.cantod/config/config.toml
+sed -i 's/minimum-gas-prices = "0acanto"/minimum-gas-prices = "0.0001acanto"/g' /mnt/data/canto-data/.cantod/config/app.toml
+sed -i 's/pruning = "default"/pruning = "nothing"/g' /mnt/data/canto-data/.cantod/config/app.toml
 cd
 # Create & start cantod.service
 sudo touch /etc/systemd/system/cantod.service
