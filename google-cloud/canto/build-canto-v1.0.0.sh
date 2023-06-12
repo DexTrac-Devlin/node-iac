@@ -15,7 +15,7 @@
 # ================================================= #
 
 # Install go
-mkdir -p stuff/packages
+mkdir -p ~/stuff/packages
 wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz -P ~/stuff/packages
 cd ~/stuff/packages
 tar xvf go1.20.4.linux-amd64.tar.gz
