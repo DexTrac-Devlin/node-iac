@@ -46,8 +46,8 @@ rm ~/.cantod/config/genesis.json
 wget https://github.com/Canto-Network/Canto/raw/genesis/Networks/Mainnet/genesis.json
 # Update config
 sed -i 's/seeds = ""/seeds = "ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:15556"/g' ~/.cantod/config/config.toml
-sed -i 's/minimum-gas-prices = "0acanto"/minimum-gas-prices = "0.0001acanto"/g' ~.cantod/config/app.toml
-sed -i 's/pruning = "default"/pruning = "nothing"/g' ~.cantod/config/app.toml
+sed -i 's/minimum-gas-prices = "0acanto"/minimum-gas-prices = "0.0001acanto"/g' ~/.cantod/config/app.toml
+sed -i 's/pruning = "default"/pruning = "nothing"/g' ~/.cantod/config/app.toml
 cd
 cp -r ~/.cantod /mnt/data/canto-data/
 
