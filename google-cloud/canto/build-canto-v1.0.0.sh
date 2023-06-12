@@ -38,7 +38,7 @@ sudo chown -R $USERNAME:$USERNAME /mnt/data/canto-data/Canto
 cd /mnt/data/canto-data/Canto
 git checkout v1.0.0
 make install
-cp /home/$USERNAME/go/bin/cantod /usr/bin/
+sudo cp /mnt/data/canto-data/Cantod/build/cantod /usr/bin/
 cd
 
 # Initialize canto
