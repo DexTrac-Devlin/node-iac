@@ -35,7 +35,7 @@ source /home/$USERNAME/.profile
 cd /mnt/data/canto-data
 git clone https://github.com/Canto-Network/Canto.git
 sudo chown -R $USERNAME:$USERNAME /mnt/data/canto-data/Canto
-cd Canto
+cd /mnt/data/canto-data/Canto
 git checkout v1.0.0
 make install
 cp /home/$USERNAME/go/bin/cantod /usr/bin/
